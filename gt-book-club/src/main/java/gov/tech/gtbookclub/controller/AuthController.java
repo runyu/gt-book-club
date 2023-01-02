@@ -7,6 +7,7 @@ import gov.tech.gtbookclub.model.response.JwtResponse;
 import gov.tech.gtbookclub.security.CustomUserDetailsService;
 import gov.tech.gtbookclub.service.UserService;
 import gov.tech.gtbookclub.util.JwtTokenUtil;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,14 +56,14 @@ public class AuthController {
         return new ResponseEntity<JwtResponse>(new JwtResponse(token), HttpStatus.OK);
     }
 
-    private void authenticate(String email, String password) throws Exception {
+    private void authenticate(String email, String password) throws AuthenticationException {
         try{
             authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(email, password));
         }catch (DisabledException e){
-            throw new Exception("User Disabled");
+            throw new AuthenticationException("User Disabled");
         }catch (BadCredentialsException e){
-            throw new Exception("Bad Credentials");
+            throw new AuthenticationException("Bad Credentials");
         }
     }
 }
