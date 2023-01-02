@@ -16,7 +16,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<User> get(){
-        return new ResponseEntity<User>(userService.readUser("du123@gmail.com"), HttpStatus.OK);
+        return new ResponseEntity<User>(userService.readUser(), HttpStatus.OK);
     }
 
     @PutMapping("/profile")
@@ -26,7 +26,7 @@ public class UserController {
 
     @DeleteMapping("/deactivate")
     public ResponseEntity<HttpStatus> delete(){
-        userService.deleteUser("");
+        userService.deleteUser();
         return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 

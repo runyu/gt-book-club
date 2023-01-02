@@ -7,10 +7,11 @@ public interface UserService {
 
     User createUser(UserModel user);
 
-    User readUser(String email);
+    User readUser();
 
     User updateUser(UserModel user);
 
-    void deleteUser(String email);
+    void deleteUser();
 
+    User getLoggedUser();
 }
