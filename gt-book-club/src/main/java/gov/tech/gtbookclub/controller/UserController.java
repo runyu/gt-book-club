@@ -16,7 +16,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<User> get(){
-        return new ResponseEntity<User>(userService.readUser("au123@gmail.com"), HttpStatus.OK);
+        return new ResponseEntity<User>(userService.readUser("du123@gmail.com"), HttpStatus.OK);
     }
 
     @PutMapping("/profile")
