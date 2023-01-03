@@ -1,4 +1,4 @@
-package gov.tech.gtbookclub.model.dto;
+package gov.tech.gtbookclub.model.request;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-public class UserModel {
+public class CreateUserRequest {
     @NotBlank(message = "please enter name")
     private String name;
 

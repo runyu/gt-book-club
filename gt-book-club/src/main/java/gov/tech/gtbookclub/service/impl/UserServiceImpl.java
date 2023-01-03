@@ -4,6 +4,7 @@ import gov.tech.gtbookclub.exception.ItemExistsException;
 import gov.tech.gtbookclub.exception.ResourceNotFoundException;
 import gov.tech.gtbookclub.model.dto.UserModel;
 import gov.tech.gtbookclub.model.entity.User;
+import gov.tech.gtbookclub.model.request.UpdateUserRequest;
 import gov.tech.gtbookclub.repository.UserRepository;
 import gov.tech.gtbookclub.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -45,18 +46,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserModel user) {
-        User originUser = readUser();
-        originUser.setName(user.getName() != null ? user.getName() : originUser.getName());
-        originUser.setEmail(user.getEmail() != null ? user.getEmail() : originUser.getEmail());
-        originUser.setPassword(user.getPassword() != null ? bcryptEncoder.encode(user.getPassword()) : originUser.getPassword());
+    public User updateUser(String email, UpdateUserRequest updateUserRequest) {
+        User originUser = findUser(email);
+        originUser.setName(updateUserRequest.getName() != null ? updateUserRequest.getName() : originUser.getName());
+        originUser.setPassword(updateUserRequest.getPassword() != null ? bcryptEncoder.encode(updateUserRequest.getPassword()) : originUser.getPassword());
+        originUser.setRole(updateUserRequest.getPassword() != null ? bcryptEncoder.encode(updateUserRequest.getPassword()) : originUser.getPassword());
         originUser.setUpdatedAt(new Date());
         return userRepository.save(originUser);
     }
 
     @Override
-    public void deleteUser() {
-        User user = readUser();
+    public void deleteUser(String email) {
+        User user = findUser(email);
         userRepository.delete(user);
     }
 
@@ -65,6 +66,12 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
+        return userRepository.findByEmail(email)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found for the email " + email));
+    }
+
+    @Override
+    public User findUser(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found for the email " + email));
     }

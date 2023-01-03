@@ -4,3 +4,5 @@ book id is the only unique identifier, book name can be repeated. no item existe
 run steps
 
 no unit test, as it is not stated in requirememt
+
+user email can not change after registration

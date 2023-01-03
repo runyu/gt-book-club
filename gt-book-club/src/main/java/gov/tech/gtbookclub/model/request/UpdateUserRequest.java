@@ -1,4 +1,4 @@
-package gov.tech.gtbookclub.model.dto;
+package gov.tech.gtbookclub.model.request;
 
 import lombok.Data;
 
@@ -8,15 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-public class UserModel {
-    @NotBlank(message = "please enter name")
+public class UpdateUserRequest {
     private String name;
 
-    @NotBlank(message = "please enter email")
-    @Email(message ="please enter valid email")
-    private String email;
-
-    @NotNull(message = "please enter password")
     @Size(min = 5, message = "Password should be at least 5 characters")
     private String password;
 
