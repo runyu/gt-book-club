@@ -1,12 +1,12 @@
 package gov.tech.gtbookclub.service;
 
-import gov.tech.gtbookclub.model.dto.UserModel;
 import gov.tech.gtbookclub.model.entity.User;
+import gov.tech.gtbookclub.model.request.CreateUserRequest;
 import gov.tech.gtbookclub.model.request.UpdateUserRequest;
 
 public interface UserService {
 
-    User createUser(UserModel user);
+    User createUser(CreateUserRequest createUserRequest);
 
     User readUser();
 

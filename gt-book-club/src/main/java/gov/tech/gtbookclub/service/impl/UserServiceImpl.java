@@ -2,8 +2,8 @@ package gov.tech.gtbookclub.service.impl;
 
 import gov.tech.gtbookclub.exception.ItemExistsException;
 import gov.tech.gtbookclub.exception.ResourceNotFoundException;
-import gov.tech.gtbookclub.model.dto.UserModel;
 import gov.tech.gtbookclub.model.entity.User;
+import gov.tech.gtbookclub.model.request.CreateUserRequest;
 import gov.tech.gtbookclub.model.request.UpdateUserRequest;
 import gov.tech.gtbookclub.repository.UserRepository;
 import gov.tech.gtbookclub.service.UserService;
@@ -26,13 +26,13 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder bcryptEncoder;
 
     @Override
-    public User createUser(UserModel userModel) {
-        if (userRepository.findByEmail(userModel.getEmail()).isPresent()) {
-            throw new ItemExistsException("User is already registered with email: " + userModel.getEmail());
+    public User createUser(CreateUserRequest createUserRequest) {
+        if (userRepository.findByEmail(createUserRequest.getEmail()).isPresent()) {
+            throw new ItemExistsException("User is already registered with email: " + createUserRequest.getEmail());
         }
 
         User user = new User();
-        BeanUtils.copyProperties(userModel, user);
+        BeanUtils.copyProperties(createUserRequest, user);
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
         user.setUpdatedAt(new Date());
         user.setCreatedAt(new Date());

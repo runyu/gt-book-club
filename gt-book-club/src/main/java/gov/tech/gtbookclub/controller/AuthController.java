@@ -1,8 +1,8 @@
 package gov.tech.gtbookclub.controller;
 
 import gov.tech.gtbookclub.model.dto.AuthModel;
-import gov.tech.gtbookclub.model.dto.UserModel;
 import gov.tech.gtbookclub.model.entity.User;
+import gov.tech.gtbookclub.model.request.CreateUserRequest;
 import gov.tech.gtbookclub.model.response.JwtResponse;
 import gov.tech.gtbookclub.security.CustomUserDetailsService;
 import gov.tech.gtbookclub.service.UserService;
@@ -16,8 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,8 +40,8 @@ public class AuthController {
 
     @PostMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> save(@Valid @RequestBody UserModel user) {
-        return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> save(@Valid @RequestBody CreateUserRequest createUserRequest) {
+        return new ResponseEntity<User>(userService.createUser(createUserRequest), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
