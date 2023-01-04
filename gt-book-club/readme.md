@@ -6,3 +6,13 @@ run steps
 no unit test, as it is not stated in requirememt
 
 user email can not change after registration
+
+lastBorrower use email for record
+
+book must be return by the same borrower
+
+scalability: Token-Based Authentication
+
+initial admin
+
+default user

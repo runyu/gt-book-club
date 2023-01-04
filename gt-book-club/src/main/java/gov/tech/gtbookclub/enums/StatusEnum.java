@@ -8,10 +8,7 @@ import lombok.Getter;
 public enum StatusEnum {
 
     SUCCESS(0, "S", "SUCCESS"),
-    FAILED(1, "F", "FAILED"),
-
-    UNAVAILABLE(2, "U", "UNAVAILABLE"),
-    AVAILABLE(3, "A", "AVAILABLE");
+    FAILED(1, "F", "FAILED");
 
     private int id;
     private String code;

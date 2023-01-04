@@ -8,6 +8,7 @@ import gov.tech.gtbookclub.model.request.UpdateBookRequest;
 import gov.tech.gtbookclub.model.response.BaseResponse;
 import gov.tech.gtbookclub.repository.BookRepository;
 import gov.tech.gtbookclub.service.BookService;
+import gov.tech.gtbookclub.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import java.util.UUID;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+
+    private final UserService userService;
 
     @Override
     public BaseResponse<List<Book>> getBooks() {
@@ -41,7 +44,6 @@ public class BookServiceImpl implements BookService {
 
         book.setUpdatedAt(new Date());
         book.setCreatedAt(new Date());
-        book.setAvailability(StatusEnum.AVAILABLE.getValue());
         bookRepository.save(book);
         return BaseResponse.<Book>builder().status(StatusEnum.SUCCESS.getValue()).data(book).build();
     }
@@ -77,11 +79,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public BaseResponse<Book> returnBook(String id) {
         Book book = getBook(id);
-        if(book.getAvailability().equals(StatusEnum.AVAILABLE.getValue())){
-            throw new ResourceNotFoundException("Book has not been borrowed id = " + id );
+
+        if(!book.getLastBorrower().equals(userService.getLoggedUser().getEmail())){
+            throw new ResourceNotFoundException("Last Borrower does not match the current logged user");
         }
 
-        book.setAvailability(StatusEnum.AVAILABLE.getValue());
+        book.setAvailability(String.valueOf(Integer.valueOf(book.getAvailability()) + 1));
         Book bookUpdated = bookRepository.save(book);
         return BaseResponse.<Book>builder().status(StatusEnum.SUCCESS.getValue()).data(bookUpdated).build();
     }
@@ -89,11 +92,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public BaseResponse<Book> borrowBook(String id) {
         Book book = getBook(id);
-        if(book.getAvailability().equals(StatusEnum.UNAVAILABLE.getValue())){
-            throw new ResourceNotFoundException("Book has been borrowed id = " + id );
+
+        if(Integer.valueOf(book.getAvailability()) <=0 ){
+            throw new ResourceNotFoundException("Book id = " + id  + " is not available");
         }
 
-        book.setAvailability(StatusEnum.AVAILABLE.getValue());
+        book.setAvailability(String.valueOf(Integer.valueOf(book.getAvailability()) -1));
+        book.setLastBorrower(userService.getLoggedUser().getEmail());
+
         Book bookUpdated = bookRepository.save(book);
         return BaseResponse.<Book>builder().status(StatusEnum.SUCCESS.getValue()).data(bookUpdated).build();
     }
