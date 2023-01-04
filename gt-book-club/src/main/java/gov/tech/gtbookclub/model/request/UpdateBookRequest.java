@@ -17,8 +17,6 @@ public class UpdateBookRequest {
 
     private String author;
 
-    private String availability;
-
     private String yearPublished;
 
 }

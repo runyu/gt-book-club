@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for the email " + email));
     }
 
-    public String validateRoleName(String role) throws ResourceNotFoundException {
+    private String validateRoleName(String role) throws ResourceNotFoundException {
         if (role.equalsIgnoreCase(AppConstant.ROLE_ADMIN)) {
             return AppConstant.ROLE_ADMIN;
         } else if (role.equalsIgnoreCase(AppConstant.ROLE_EDITOR)) {
