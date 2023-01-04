@@ -16,3 +16,5 @@ scalability: Token-Based Authentication
 initial admin
 
 default user
+
+add swagger
