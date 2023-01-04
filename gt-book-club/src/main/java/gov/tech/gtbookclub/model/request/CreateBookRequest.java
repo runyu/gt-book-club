@@ -1,6 +1,7 @@
 package gov.tech.gtbookclub.model.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Pattern;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CreateBookRequest {
 
     @NotBlank(message = "title must not be blank")
