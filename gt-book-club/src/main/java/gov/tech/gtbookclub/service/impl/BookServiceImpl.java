@@ -41,7 +41,6 @@ public class BookServiceImpl implements BookService {
     public BaseResponse<Book> saveBook(CreateBookRequest bookRequest) {
         Book book = new Book();
         BeanUtils.copyProperties(bookRequest, book);
-
         book.setUpdatedAt(new Date());
         book.setCreatedAt(new Date());
         bookRepository.save(book);
@@ -64,7 +63,6 @@ public class BookServiceImpl implements BookService {
         exsitngBook.setGenre(bookRequest.getGenre() != null ? bookRequest.getGenre() : exsitngBook.getGenre());
         exsitngBook.setAuthor(bookRequest.getAuthor() != null ? bookRequest.getAuthor() : exsitngBook.getAuthor());
         exsitngBook.setYearPublished(bookRequest.getYearPublished() != null ? bookRequest.getYearPublished() : exsitngBook.getYearPublished());
-
         exsitngBook.setUpdatedAt(new Date());
         Book bookUpdated = bookRepository.save(exsitngBook);
         return BaseResponse.<Book>builder().status(StatusEnum.SUCCESS.getValue()).data(bookUpdated).build();

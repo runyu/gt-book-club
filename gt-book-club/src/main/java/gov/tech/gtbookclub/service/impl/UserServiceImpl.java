@@ -1,5 +1,6 @@
 package gov.tech.gtbookclub.service.impl;
 
+import gov.tech.gtbookclub.Constant.AppConstant;
 import gov.tech.gtbookclub.exception.ItemExistsException;
 import gov.tech.gtbookclub.exception.ResourceNotFoundException;
 import gov.tech.gtbookclub.model.entity.User;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Date;
 
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         BeanUtils.copyProperties(createUserRequest, user);
+        user.setRole(validateRoleName(createUserRequest.getRole()));
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
         user.setUpdatedAt(new Date());
         user.setCreatedAt(new Date());
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
         User originUser = findUser(email);
         originUser.setName(updateUserRequest.getName() != null ? updateUserRequest.getName() : originUser.getName());
         originUser.setPassword(updateUserRequest.getPassword() != null ? bcryptEncoder.encode(updateUserRequest.getPassword()) : originUser.getPassword());
-        originUser.setRole(updateUserRequest.getPassword() != null ? bcryptEncoder.encode(updateUserRequest.getPassword()) : originUser.getPassword());
+        originUser.setRole(updateUserRequest.getRole() != null ? validateRoleName(updateUserRequest.getRole()) : originUser.getRole());
         originUser.setUpdatedAt(new Date());
         return userRepository.save(originUser);
     }
@@ -67,15 +70,25 @@ public class UserServiceImpl implements UserService {
     public User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-
         return userRepository.findByEmail(email)
-                .orElseThrow(()-> new UsernameNotFoundException("User not found for the email " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found for the email " + email));
     }
 
     @Override
     public User findUser(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(()-> new UsernameNotFoundException("User not found for the email " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found for the email " + email));
+    }
+
+    public String validateRoleName(String role) throws ResourceNotFoundException {
+        if (role.toUpperCase().equals(AppConstant.ROLE_ADMIN)) {
+            return AppConstant.ROLE_ADMIN;
+        } else if (role.toUpperCase().equals(AppConstant.ROLE_EDITOR)) {
+            return AppConstant.ROLE_EDITOR;
+        } else if (role.toUpperCase().equals(AppConstant.ROLE_ADMIN)) {
+            return AppConstant.ROLE_USER;
+        }
+        throw new ResourceNotFoundException("role value must be either ROLE_ADMIN, ROLE_EDITOR or ROLE_USER");
     }
 
 }

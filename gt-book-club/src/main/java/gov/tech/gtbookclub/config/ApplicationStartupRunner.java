@@ -18,19 +18,21 @@ public class ApplicationStartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Optional<User> userOptional = userRepository.findByEmail("admin@email.com");
+        Optional<User> userOptional = userRepository.findByEmail(AppConstant.DEFAULT_ADMIN_EMAIL);
 
         if (!userOptional.isPresent()) {
-            if (!userOptional.get().getRole().equals(AppConstant.ROLE_ADMIN)) {
-                User user = User.builder()
-                        .name(AppConstant.DEFAULT_ADMIN)
-                        .email(AppConstant.DEFAULT_ADMIN_EMAIL)
-                        .password(AppConstant.DEFAULT_ADMIN_PASSWORD)
-                        .role(AppConstant.ROLE_ADMIN)
-                        .createdAt(new Date())
-                        .build();
-                userRepository.save(user);
-            }
+            createDefaultAdmin();
         }
+    }
+
+    public void createDefaultAdmin() {
+        User user = User.builder()
+                .name(AppConstant.DEFAULT_ADMIN)
+                .email(AppConstant.DEFAULT_ADMIN_EMAIL)
+                .password(AppConstant.DEFAULT_ADMIN_PASSWORD)
+                .role(AppConstant.ROLE_ADMIN)
+                .createdAt(new Date())
+                .build();
+        userRepository.save(user);
     }
 }
