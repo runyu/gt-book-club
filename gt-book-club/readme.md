@@ -17,4 +17,4 @@ initial admin
 
 default user
 
-add swagger
+add swagger - http://localhost:8091/swagger-ui.html#

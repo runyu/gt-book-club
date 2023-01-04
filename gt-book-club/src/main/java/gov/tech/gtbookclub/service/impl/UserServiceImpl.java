@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Date;
 
@@ -81,14 +80,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public String validateRoleName(String role) throws ResourceNotFoundException {
-        if (role.toUpperCase().equals(AppConstant.ROLE_ADMIN)) {
+        if (role.equalsIgnoreCase(AppConstant.ROLE_ADMIN)) {
             return AppConstant.ROLE_ADMIN;
-        } else if (role.toUpperCase().equals(AppConstant.ROLE_EDITOR)) {
+        } else if (role.equalsIgnoreCase(AppConstant.ROLE_EDITOR)) {
             return AppConstant.ROLE_EDITOR;
-        } else if (role.toUpperCase().equals(AppConstant.ROLE_ADMIN)) {
+        } else if (role.equalsIgnoreCase(AppConstant.ROLE_USER)) {
             return AppConstant.ROLE_USER;
         }
         throw new ResourceNotFoundException("role value must be either ROLE_ADMIN, ROLE_EDITOR or ROLE_USER");
     }
-
 }
