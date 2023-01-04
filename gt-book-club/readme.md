@@ -9,15 +9,23 @@
 1. open `config/application-dev.properties`
 change `spring.data.mongodb.uri`, `spring.datasource.username` and `spring.datasource.password` as per your mysql installation
 
-2. build and run the project
+2. build the project
 ```
 mvn clean package
-java -jar target/gt-book-club-0.0.1-SNAPSHOT.jar --spring.config.locations=config/ --spring.profiles.active=dev
 ```
 
-The app will start running at <http://http://localhost:8091/>
+3. run the project
+```
+# dev profile
+java -jar target/gt-book-club-0.0.1-SNAPSHOT.jar --spring.config.locations=config/ --spring.profiles.active=dev
 
-The api documentation can be found at <http://localhost:8091/swagger-ui.html#>
+# prod profile
+java -jar target/gt-book-club-0.0.1-SNAPSHOT.jar --spring.config.locations=config/ --spring.profiles.active=prod
+```
+
+For Development environment, the app will start running at <http://http://localhost:8091/>
+
+The API documentation can be found at <http://localhost:8091/swagger-ui.html#>
 
 ### Project Folder Structure 
 - The folder structure uses maven project folder structure. 
