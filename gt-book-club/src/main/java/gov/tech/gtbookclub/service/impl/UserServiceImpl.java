@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User readUser() throws ResourceNotFoundException {
-        String email = getLoggedUser().getEmail();
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found for the email: " + email));
+        return getLoggedUser();
     }
 
     @Override
